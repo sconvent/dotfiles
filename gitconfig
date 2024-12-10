@@ -1,0 +1,12 @@
+[user]
+	name = Simon Convent
+
+[core]
+	excludesfile = ~/.gitignore_global
+    
+[push]
+	default = upstream
+
+# Include local customizations (e.g. email)
+[include]
+    path = ~/.gitconfig_local
