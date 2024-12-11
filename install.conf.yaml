@@ -1,5 +1,30 @@
 - clean: []
 - link:
-    ~/.gitconfig:
-    ~/.gitignore_global:
-- shell: []
+    ~/.zshrc: zshrc
+    ~/.gitconfig: gitconfig
+    ~/.gitignore_global: gitignore_global
+- shell:
+    - description: "If on macOS then install Homebrew if not already installed and apply Brewfile"
+      stdout: true
+      # Use pinned version of Brewfile install script
+      command: |
+        if [[ "$(uname)" == "Darwin" ]]; then
+          if ! command -v brew >/dev/null 2>&1; then
+            echo "Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/28f5ebf4cd11ce7c020909d95ecf88079fca1b1b/install.sh)"
+          else
+            echo "Homebrew is already installed."
+          fi
+          echo "Applying Brewfile..."
+          brew bundle --file=Brewfile
+        fi
+    - description: "Install Oh My Zsh if not already installed"
+      stdout: true
+      # Use pinned version of Oh My Zsh install script
+      command: |
+        if [[ ! -d ~/.oh-my-zsh ]]; then
+          echo "Installing Oh My Zsh..."
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/057f3ec67e65661d3c01b757ec5cad0a3718453e/tools/install.sh)" "" --unattended
+        else
+          echo "Oh My Zsh is already installed."
+        fi
